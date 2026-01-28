@@ -4,7 +4,7 @@
 > **Last Updated**: 2026-01-27
 
 ## 概要
-multi-agent-shogunは、Claude Code + tmux を使ったマルチエージェント並列開発基盤である。
+multi-agent-shogunは、Codex CLI + tmux を使ったマルチエージェント並列開発基盤である。
 戦国時代の軍制をモチーフとした階層構造で、複数のプロジェクトを並行管理できる。
 
 ## コンパクション復帰時（全エージェント必須）
@@ -118,13 +118,8 @@ language: ja  # ja, en, es, zh, ko, fr, de 等
 
 ## MCPツールの使用
 
-MCPツールは遅延ロード方式。使用前に必ず `ToolSearch` で検索せよ。
-
-```
-例: Notionを使う場合
-1. ToolSearch で "notion" を検索
-2. 返ってきたツール（mcp__notion__xxx）を使用
-```
+Codex CLIのMCPは `codex mcp add` で登録し、設定は `~/.codex/config.toml` または `./.codex/config.toml` に保存される。
+TUIでは `/mcp` で有効なサーバ一覧を確認可能。OAuthが必要な場合は `codex mcp login <server-name>` を実行せよ。
 
 **導入済みMCP**: Notion, Playwright, GitHub, Sequential Thinking, Memory
 

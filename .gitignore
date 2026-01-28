@@ -1,7 +1,10 @@
 # Order file (internal use only)
 claude-shogun-orders.md
 
-# Claude Code settings
+# Codex settings
+.codex/
+
+# Claude Code settings (legacy)
 .claude/
 
 # Test outputs (generated during testing)

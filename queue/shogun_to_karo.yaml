@@ -1,1 +1,7 @@
-queue: []
+queue:
+  - id: cmd_002
+    timestamp: "2026-01-28T23:25:33"
+    command: "tmux capture-pane が /tmp/tmux-1000/default で権限エラーになる件を解決せよ。原因調査（ソケット権限/ユーザー/環境）と対処案を示し、必要なら設定変更や手順を提示せよ。"
+    project: "multi-agent-shogun"
+    priority: high
+    status: pending

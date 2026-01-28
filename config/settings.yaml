@@ -9,10 +9,10 @@ language: ja
 # スキル設定
 skill:
   # スキル保存先（生成されたスキルはここに保存）
-  save_path: "~/.claude/skills/shogun-generated/"
+  save_path: "~/.codex/skills/shogun-generated/"
 
   # ローカルスキル保存先（このプロジェクト専用）
-  local_path: "~/multi-agent-shogun/skills/"
+  local_path: "./.codex/skills/"
 
 # スクリーンショット設定
 screenshot:

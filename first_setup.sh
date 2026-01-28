@@ -181,46 +181,46 @@ else
 fi
 
 # ============================================================
-# STEP 4: Claude Code CLI チェック
+# STEP 4: Codex CLI チェック
 # ============================================================
-log_step "STEP 4: Claude Code CLI チェック"
+log_step "STEP 4: Codex CLI チェック"
 
-if command -v claude &> /dev/null; then
+if command -v codex &> /dev/null; then
     # バージョン取得を試みる
-    CLAUDE_VERSION=$(claude --version 2>/dev/null || echo "unknown")
-    log_success "Claude Code CLI がインストール済みです"
-    log_info "バージョン: $CLAUDE_VERSION"
-    RESULTS+=("Claude Code CLI: OK")
+    CODEX_VERSION=$(codex --version 2>/dev/null || echo "unknown")
+    log_success "Codex CLI がインストール済みです"
+    log_info "バージョン: $CODEX_VERSION"
+    RESULTS+=("Codex CLI: OK")
 else
-    log_warn "Claude Code CLI がインストールされていません"
+    log_warn "Codex CLI がインストールされていません"
     echo ""
 
     if command -v npm &> /dev/null; then
         echo "  インストールコマンド:"
-        echo "     npm install -g @anthropic-ai/claude-code"
+        echo "     npm install -g @openai/codex"
         echo ""
         read -p "  今すぐインストールしますか? [Y/n]: " REPLY
         REPLY=${REPLY:-Y}
         if [[ $REPLY =~ ^[Yy]$ ]]; then
-            log_info "Claude Code CLI をインストール中..."
-            npm install -g @anthropic-ai/claude-code
+            log_info "Codex CLI をインストール中..."
+            npm install -g @openai/codex
 
-            if command -v claude &> /dev/null; then
-                log_success "Claude Code CLI インストール完了"
-                RESULTS+=("Claude Code CLI: インストール完了")
+            if command -v codex &> /dev/null; then
+                log_success "Codex CLI インストール完了"
+                RESULTS+=("Codex CLI: インストール完了")
             else
                 log_error "インストールに失敗しました。パスを確認してください"
-                RESULTS+=("Claude Code CLI: インストール失敗")
+                RESULTS+=("Codex CLI: インストール失敗")
                 HAS_ERROR=true
             fi
         else
             log_warn "インストールをスキップしました"
-            RESULTS+=("Claude Code CLI: 未インストール (スキップ)")
+            RESULTS+=("Codex CLI: 未インストール (スキップ)")
             HAS_ERROR=true
         fi
     else
         echo "  npm がインストールされていないため、先に Node.js をインストールしてください"
-        RESULTS+=("Claude Code CLI: 未インストール (npm必要)")
+        RESULTS+=("Codex CLI: 未インストール (npm必要)")
         HAS_ERROR=true
     fi
 fi
@@ -240,6 +240,7 @@ DIRECTORIES=(
     "logs"
     "demo_output"
     "skills"
+    ".codex/skills"
 )
 
 CREATED_COUNT=0
@@ -284,10 +285,10 @@ language: ja
 # スキル設定
 skill:
   # スキル保存先（生成されたスキルはここに保存）
-  save_path: "~/.claude/skills/shogun-generated/"
+  save_path: "~/.codex/skills/shogun-generated/"
 
   # ローカルスキル保存先（このプロジェクト専用）
-  local_path: "~/multi-agent-shogun/skills/"
+  local_path: "./.codex/skills/"
 
 # ログ設定
 logging:
@@ -418,11 +419,14 @@ echo "  ┌───────────────────────
 echo "  │  📜 次のステップ                                             │"
 echo "  └──────────────────────────────────────────────────────────────┘"
 echo ""
+echo "  初回ログイン:"
+echo "     codex --login"
+echo ""
 echo "  出陣（全エージェント起動）:"
 echo "     ./shutsujin_departure.sh"
 echo ""
 echo "  オプション:"
-echo "     ./shutsujin_departure.sh -s   # セットアップのみ（Claude手動起動）"
+echo "     ./shutsujin_departure.sh -s   # セットアップのみ（Codex手動起動）"
 echo "     ./shutsujin_departure.sh -t   # Windows Terminalタブ展開"
 echo ""
 echo "  詳細は README.md を参照してください。"
