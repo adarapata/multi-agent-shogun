@@ -134,6 +134,42 @@ else
 fi
 
 # ============================================================
+# STEP 2.5: tmux ソケット設定
+# ============================================================
+log_step "STEP 2.5: tmux ソケット設定"
+
+TMUX_SOCKET="$HOME/.tmux-sock"
+
+if [ -d "$TMUX_SOCKET" ]; then
+    log_error "~/.tmux-sock がディレクトリとして存在します。ソケット作成できません"
+    log_warn "ディレクトリを削除/リネームしてから再実行してください"
+    RESULTS+=("tmux socket: 失敗 (ディレクトリが存在)")
+    HAS_ERROR=true
+elif command -v tmux &> /dev/null; then
+    if [ -S "$TMUX_SOCKET" ]; then
+        log_success "tmux ソケットが既に存在します (~/.tmux-sock)"
+        RESULTS+=("tmux socket: OK (既存)")
+    else
+        log_info "tmux ソケットを ~/.tmux-sock に作成します"
+        if ! tmux -S "$TMUX_SOCKET" has-session 2>/dev/null; then
+            tmux -S "$TMUX_SOCKET" new-session -d -s socket_init
+            tmux -S "$TMUX_SOCKET" kill-session -t socket_init 2>/dev/null || true
+        fi
+
+        if [ -S "$TMUX_SOCKET" ]; then
+            log_success "tmux ソケットを作成しました (~/.tmux-sock)"
+            RESULTS+=("tmux socket: OK (作成)")
+        else
+            log_warn "tmux ソケットを作成できませんでした（後で tmux 起動時に作成されます）"
+            RESULTS+=("tmux socket: 未作成 (後で作成)")
+        fi
+    fi
+else
+    log_warn "tmux が未インストールのためソケット作成をスキップしました"
+    RESULTS+=("tmux socket: 未作成 (tmux 未インストール)")
+fi
+
+# ============================================================
 # STEP 3: Node.js チェック
 # ============================================================
 log_step "STEP 3: Node.js チェック"
