@@ -104,7 +104,7 @@ send_keys:
 # 足軽の状態確認ルール
 ashigaru_status_check:
   method: tmux_capture_pane
-  command: "tmux capture-pane -t multiagent:0.{N} -p | tail -20"
+  command: "tmux -S ~/.tmux-sock capture-pane -t multiagent:0.{N} -p | tail -20"
   busy_indicators:
     - "thinking"
     - "Esc to interrupt"
@@ -180,22 +180,24 @@ date "+%Y-%m-%dT%H:%M:%S"
 
 ## 🔴 tmux send-keys の使用方法（超重要）
 
+**前提**: tmux ソケットは `~/.tmux-sock`。全ての tmux コマンドに `-S ~/.tmux-sock` を付ける。
+
 ### ❌ 絶対禁止パターン
 
 ```bash
-tmux send-keys -t multiagent:0.1 'メッセージ' Enter  # ダメ
+tmux -S ~/.tmux-sock send-keys -t multiagent:0.1 'メッセージ' Enter  # ダメ
 ```
 
 ### ✅ 正しい方法（2回に分ける）
 
 **【1回目】**
 ```bash
-tmux send-keys -t multiagent:0.{N} 'queue/tasks/ashigaru{N}.yaml に任務がある。確認して実行せよ。'
+tmux -S ~/.tmux-sock send-keys -t multiagent:0.{N} 'queue/tasks/ashigaru{N}.yaml に任務がある。確認して実行せよ。'
 ```
 
 **【2回目】**
 ```bash
-tmux send-keys -t multiagent:0.{N} Enter
+tmux -S ~/.tmux-sock send-keys -t multiagent:0.{N} Enter
 ```
 
 ### ⚠️ 将軍への send-keys は禁止
@@ -332,7 +334,10 @@ dashboard.md を更新する際は、**必ず以下を確認せよ**：
 | 著作権問題 | 「ASCIIアート著作権確認【判断必要】」 |
 | 技術選択 | 「DB選定【PostgreSQL vs MySQL】」 |
 | ブロック事項 | 「API認証情報不足【作業停止中】」 |
+| 実行不可/エラー | 「MCP失敗で進行不可【原因/再現/影響/暫定回避策あり】」 |
 | 質問事項 | 「予算上限の確認【回答待ち】」 |
+
+**実行不可/エラー報告を受領したら即時に🚨要対応へ記載し、報告に原因・再現手順・影響・暫定回避策が含まれているか確認せよ。**
 
 ### 記載フォーマット例
 

@@ -85,7 +85,7 @@ send_keys:
 # 家老の状態確認ルール
 karo_status_check:
   method: tmux_capture_pane
-  command: "tmux capture-pane -t multiagent:0.0 -p | tail -20"
+  command: "tmux -S ~/.tmux-sock capture-pane -t multiagent:0.0 -p | tail -20"
   busy_indicators:
     - "thinking"
     - "Effecting…"
@@ -188,26 +188,28 @@ date "+%Y-%m-%dT%H:%M:%S"
 
 ## 🔴 tmux send-keys の使用方法（超重要）
 
+**前提**: tmux ソケットは `~/.tmux-sock`。全ての tmux コマンドに `-S ~/.tmux-sock` を付ける。
+
 ### ❌ 絶対禁止パターン
 
 ```bash
 # ダメな例1: 1行で書く
-tmux send-keys -t multiagent:0.0 'メッセージ' Enter
+tmux -S ~/.tmux-sock send-keys -t multiagent:0.0 'メッセージ' Enter
 
 # ダメな例2: &&で繋ぐ
-tmux send-keys -t multiagent:0.0 'メッセージ' && tmux send-keys -t multiagent:0.0 Enter
+tmux -S ~/.tmux-sock send-keys -t multiagent:0.0 'メッセージ' && tmux -S ~/.tmux-sock send-keys -t multiagent:0.0 Enter
 ```
 
 ### ✅ 正しい方法（2回に分ける）
 
 **【1回目】** メッセージを送る：
 ```bash
-tmux send-keys -t multiagent:0.0 'queue/shogun_to_karo.yaml に新しい指示がある。確認して実行せよ。'
+tmux -S ~/.tmux-sock send-keys -t multiagent:0.0 'queue/shogun_to_karo.yaml に新しい指示がある。確認して実行せよ。'
 ```
 
 **【2回目】** Enterを送る：
 ```bash
-tmux send-keys -t multiagent:0.0 Enter
+tmux -S ~/.tmux-sock send-keys -t multiagent:0.0 Enter
 ```
 
 ## 指示の書き方
